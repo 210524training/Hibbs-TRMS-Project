@@ -1,20 +1,37 @@
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import myDocClient from "./DocClient";
 import log from "./log";
+import readline from 'readline';
 import user from './user';
+
+export const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
 
 class TRMSDAO {
   constructor(
       private DocClient: DocumentClient= myDocClient,
   ) {}
-  async function register(employee: employee):Promise<void>{
-    /* let rl.question(`
+   async function register():Promise<void>{
+    let who= await rl.question(`
       What type of user are you?
       1. Regular Employee
       2. Supervisor
       3. Department Head
       4. Benefits controller
-    `); */
+    `,(answer)=>{
+        if((!Number.isNaN(Number(answer)) && (Number(answer) <= 3) && (Number(answer) >= 0)) || (answer === 'q')) {
+          resolve(answer);
+        } else {
+          resolve('false');
+        }
+      },
+    );
+  },
+);
+    }
+    
     const params = {
       TableName: 'TRMS-Data',
       Item: {
@@ -37,5 +54,15 @@ class TRMSDAO {
   }
 
 };
+
+
+class DynaDAO {
+  constructor(
+      private DocClient: DocumentClient= myDocClient,
+  ) {}
+  
+
+};
+
 
 export default new TRMSDAO();

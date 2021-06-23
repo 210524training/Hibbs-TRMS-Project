@@ -1,15 +1,25 @@
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
-import myDocClient from "./DocClient";
-import log from "./log";
-import readline from 'readline';
-import user from './user';
+import myDocClient from "../DocClient";
+import log from "../log";
 
-export const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+/* 
+types:
+benefits cooardinator
+department head
+employee
+supervisor
+request
+reimbursement
 
-class TRMSDAO {
+need a CRUD for each of them
+
+
+*/
+
+
+
+
+/*class TRMSDAO {
   constructor(
       private DocClient: DocumentClient= myDocClient,
   ) {}
@@ -65,4 +75,4 @@ class DynaDAO {
 };
 
 
-export default new TRMSDAO();
+export default new TRMSDAO(); */

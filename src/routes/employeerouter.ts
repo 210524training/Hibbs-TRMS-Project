@@ -38,11 +38,11 @@ employeeRouter.put('/', async (req: express.Request<unknown, unknown, employee, 
   );
 });
 
-employeeRouter.delete('/:id', async (req, res) => {
-  const { id } = req.params;
+employeeRouter.delete('/:ID', async (req, res) => {
+  const { ID } = req.params;
 
   res.json(
-    await employeeService.deleteEmployee(id),
+    await employeeService.deleteEmployee(ID),
   );
 });
 

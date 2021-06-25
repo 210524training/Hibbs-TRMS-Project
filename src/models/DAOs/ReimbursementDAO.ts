@@ -39,14 +39,14 @@ export class ReimbursementDAO{
         async getAllReimbursements(): Promise<reimbursement[]>{
             const params: DocumentClient.QueryInput={
                 TableName: 'TRMS-data',
-                KeyConditionExpression: '#T = :r',
+                KeyConditionExpression: '#o = :r',
                 ExpressionAttributeNames: {
-                  '#T': 'Type',
+                  '#o': 'ObjType',
                 },
                 ExpressionAttributeValues: {
                   ':r': 'Reimbursement',
                 },
-                ProjectionExpression:'Type,ID,amount,status,eventType,reimbursePortion,Date'
+                ProjectionExpression:'ObjType,ID,amount,status,eventType,reimbursePortion,Date'
             };
             const data=await this.client.query(params).promise();
             return data.Items as reimbursement[];
@@ -61,7 +61,7 @@ export class ReimbursementDAO{
                     Type:'Reimbursement',
                     ID,
                 },
-                ProjectionExpression:'Type,ID,amount,status,eventType,reimbursePortion,Date'
+                ProjectionExpression:'ObjType,ID,amount,status,eventType,reimbursePortion,Date'
                 };
     
             const data=await this.client.get(params).promise();

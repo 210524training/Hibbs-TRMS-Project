@@ -3,7 +3,7 @@ import uuid from 'uuid';
 
 export default class Reimbursement extends TableItem{
     constructor(
-        public Type: "Reimbursement",
+        public ObjType: "Reimbursement",
         public ID: string=uuid.v4(),
         public ammount: number,
         public status: "pending" | "approved" | "rejected" | "awarded",
@@ -13,7 +13,7 @@ export default class Reimbursement extends TableItem{
         public Date: Date,
         
     ){
-        super(Type,ID);
+        super(ObjType,ID);
     }
 }
 //export function makeReimbursement(ID:string=uuid.v4(),ammount:number,status:"pending"|"approved"|"rejected"|"awarded",eventType:"University Course(s)"|"Seminar"|"Certification"|"Cert Prep"|"Certification"|"Technical Training"|"Other",reimbursePortion:0.8|0.6|0.75|1|0.9|0.3,Date:Date){

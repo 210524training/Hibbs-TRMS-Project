@@ -13,11 +13,11 @@ export class EmployeeService{
     //Create-POST:
     addEmployee(employee: Employee): Promise<boolean> {
         return this.DAO.addEmployee(new Employee(
-            employee.Type="Employee",
+            employee.ObjType="Employee",
             employee.ID=uuid.v4(),
             employee.username,
             employee.password,
-            employee.name,
+            employee.RealName,
             employee.pendingReimbursements,
             employee.awardedReimbursements,
             employee.usedReimbrsements=employee.pendingReimbursements+employee.awardedReimbursements,
@@ -51,11 +51,11 @@ export class EmployeeService{
     //Update-PUT:
     updateEmployee(employee: Employee): Promise<boolean> {
         return this.DAO.update_Employee(new Employee(
-            employee.Type="Employee",
+            employee.ObjType="Employee",
             employee.ID,
             employee.username,
             employee.password,
-            employee.name,
+            employee.RealName,
             employee.pendingReimbursements,
             employee.awardedReimbursements,
             employee.usedReimbrsements=employee.pendingReimbursements+employee.awardedReimbursements,
@@ -75,7 +75,8 @@ export class EmployeeService{
         return this.addEmployee(employee);
     }
     async loginEmployee(username: string, password: string): Promise<Employee> {
-        const Emp = await this.DAO.getEmployeeByUsername(username);
+      //console.log("username at service: "+username);  
+      const Emp = await this.DAO.getEmployeeByUsername(username);
     
         if(!Emp) {
           throw new NoUserMatchesUsernameError();

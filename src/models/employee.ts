@@ -3,11 +3,11 @@ import uuid from 'uuid';
 
 export default class Employee extends user{
     constructor(
-        public Type: "Employee" | "Supervisor" | "Department Head" | "Benefits Controller",
+        public ObjType: "Employee" | "Supervisor" | "Department Head" | "Benefits Controller",
         public ID: string=uuid.v4(),
         public username:String,
         public password:string,
-        public name:string,
+        public RealName:string,
         public pendingReimbursements:number,
         public awardedReimbursements:number,
         public usedReimbrsements:number=pendingReimbursements+awardedReimbursements,
@@ -15,7 +15,7 @@ export default class Employee extends user{
         public supervisor:null | string,
         public department:string,
     ) {
-        super(Type,ID,username,password); 
+        super(ObjType,ID,username,password); 
     }
 };
 

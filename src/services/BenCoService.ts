@@ -13,11 +13,11 @@ export class BenCoService{
     //Create-POST:
     addBenCo(benCo: BenCo): Promise<boolean> {
         return this.DAO.addBenCo(new BenCo(
-            benCo.Type="Benefits Controller",
+            benCo.ObjType="Benefits Controller",
             benCo.ID=uuid.v4(),
             benCo.username,
             benCo.password,
-            benCo.name,
+            benCo.RealName,
             benCo.pendingReimbursements,
             benCo.awardedReimbursements,
             benCo.usedReimbrsements=benCo.pendingReimbursements+benCo.awardedReimbursements,
@@ -50,11 +50,11 @@ export class BenCoService{
     //Update-PUT:
     updateBenCo(benCo: BenCo): Promise<boolean> {
         return this.DAO.update_benCo(new BenCo(
-            benCo.Type="Benefits Controller",
+            benCo.ObjType="Benefits Controller",
             benCo.ID,
             benCo.username,
             benCo.password,
-            benCo.name,
+            benCo.RealName,
             benCo.pendingReimbursements,
             benCo.awardedReimbursements,
             benCo.usedReimbrsements=benCo.pendingReimbursements+benCo.awardedReimbursements,

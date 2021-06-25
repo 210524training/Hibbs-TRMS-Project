@@ -13,11 +13,11 @@ export class SupervisorService{
     //Create-POST:
     addSupervisor(supervisor: Supervisor): Promise<boolean> {
         return this.DAO.addSupervisor(new Supervisor(
-            supervisor.Type="Supervisor",
+            supervisor.ObjType="Supervisor",
             supervisor.ID=uuid.v4(),
             supervisor.username,
             supervisor.password,
-            supervisor.name,
+            supervisor.RealName,
             supervisor.pendingReimbursements,
             supervisor.awardedReimbursements,
             supervisor.usedReimbrsements=supervisor.pendingReimbursements+supervisor.awardedReimbursements,
@@ -51,11 +51,11 @@ export class SupervisorService{
     //Update-PUT:
     updateSupervisor(supervisor: Supervisor): Promise<boolean> {
         return this.DAO.update_supervisor(new Supervisor(
-            supervisor.Type="Supervisor",
+            supervisor.ObjType="Supervisor",
             supervisor.ID,
             supervisor.username,
             supervisor.password,
-            supervisor.name,
+            supervisor.RealName,
             supervisor.pendingReimbursements,
             supervisor.awardedReimbursements,
             supervisor.usedReimbrsements=supervisor.pendingReimbursements+supervisor.awardedReimbursements,

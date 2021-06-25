@@ -1,6 +1,7 @@
 import express, { Router } from 'express';
 import helmet from 'helmet';
 
+
 import employeerouter from './employeerouter';
 import supervisorrouter from './supervisorrouter';
 import deptheadrouter from './deptheadrouter';
@@ -23,6 +24,7 @@ const baseRouter=Router();
 
 baseRouter.post('/employeeLogin', async (req: express.Request<unknown, unknown, { username: string, password: string }, unknown, {}>, res) => {
     const { username, password } = req.body;
+    //console.log("username at baseRouter: "+username);
   
     const employee = await employeeservice.loginEmployee(username, password);
   
@@ -83,6 +85,13 @@ export async function logout(req: express.Request, res: express.Response): Promi
 }
   
 baseRouter.post('/logout', logout);
+
+baseRouter.use('/api/v1/employee', employeerouter);
+baseRouter.use('/api/v1/supervisor', supervisorrouter);
+baseRouter.use('/api/v1/departmenthead',deptheadrouter);
+baseRouter.use('api/v1/benCo',bencorouter);
+baseRouter.use('api/v1/reimbursement',reimburserouter);
+baseRouter.use('api/v1/request',requestrouter);
 
 
 

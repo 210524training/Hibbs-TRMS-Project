@@ -13,11 +13,11 @@ export class DeptHeadService{
     //Create-POST:
     addDepartmentHead(departmentHead: DepartmentHead): Promise<boolean> {
         return this.DAO.addDepartmentHead(new DepartmentHead(
-            departmentHead.Type="Department Head",
+            departmentHead.ObjType="Department Head",
             departmentHead.ID=uuid.v4(),
             departmentHead.username,
             departmentHead.password,
-            departmentHead.name,
+            departmentHead.RealName,
             departmentHead.pendingReimbursements,
             departmentHead.awardedReimbursements,
             departmentHead.usedReimbrsements=departmentHead.pendingReimbursements+departmentHead.awardedReimbursements,
@@ -51,11 +51,11 @@ export class DeptHeadService{
     //Update-PUT:
     updateDeptHead(departmentHead: DepartmentHead): Promise<boolean> {
         return this.DAO.update_departmentHead(new DepartmentHead(
-            departmentHead.Type="Department Head",
+            departmentHead.ObjType="Department Head",
             departmentHead.ID,
             departmentHead.username,
             departmentHead.password,
-            departmentHead.name,
+            departmentHead.RealName,
             departmentHead.pendingReimbursements,
             departmentHead.awardedReimbursements,
             departmentHead.usedReimbrsements=departmentHead.pendingReimbursements+departmentHead.awardedReimbursements,

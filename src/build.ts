@@ -1,6 +1,6 @@
 import fs from 'fs-extra';// npm install @types/fs-extra
 import childProcess from 'child_process';
-import logger from './src/log';
+import logger from './log';
 
 function remove(loc: string): Promise<void> {
   return new Promise((res, rej) => fs.remove(loc, (err) => (err ? rej(err) : res())));

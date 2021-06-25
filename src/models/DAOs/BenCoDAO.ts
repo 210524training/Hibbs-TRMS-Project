@@ -39,14 +39,14 @@ export class BenCoDAO{
         async getAllBenCos(): Promise<benCo[]>{
             const params: DocumentClient.QueryInput={
                 TableName: 'TRMS-data',
-                KeyConditionExpression: '#T = :B',
+                KeyConditionExpression: '#) = :B',
                 ExpressionAttributeNames: {
-                  '#T': 'Type',
+                  '#O': 'ObjType',
                 },
                 ExpressionAttributeValues: {
                   ':B': 'Benefits Controller',
                 },
-                ProjectionExpression:'Type,ID,username,password,name,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
+                ProjectionExpression:'ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
             };
             const data=await this.client.query(params).promise();
             return data.Items as benCo[];
@@ -62,7 +62,7 @@ export class BenCoDAO{
                     Type:'Benefits Controller',
                     ID,
                 },
-                ProjectionExpression:'Type,ID,username,password,name,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
+                ProjectionExpression:'ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
                 };
     
             const data=await this.client.get(params).promise();
@@ -78,12 +78,12 @@ export class BenCoDAO{
             const params: DocumentClient.QueryInput={
                 TableName:'TRMS-data',
                 IndexName:'username',
-                KeyConditionExpression:'Type=:t AND username=:u',
+                KeyConditionExpression:'ObjType=:o AND username=:u',
                 ExpressionAttributeValues:{
-                    ':t':'Benefits Controller',
+                    ':o':'Benefits Controller',
                     ':u':username,
                 },
-                ProjectionExpression:'Type,ID,username,password,name,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
+                ProjectionExpression:'ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
             };
             const data= await this.client.query(params).promise();
             if(!data.Items || data.Count===0){
@@ -123,7 +123,7 @@ export class BenCoDAO{
         const params: DocumentClient.DeleteItemInput={
             TableName:"TRMS-data",
             Key:{
-                Type:'Benefits Controller',
+                ObjType:'Benefits Controller',
                 ID,
             },
         };

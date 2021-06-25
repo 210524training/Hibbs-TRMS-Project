@@ -1,6 +1,7 @@
 import log4js from 'log4js';
+const logconfig=require('./logconfig.json');
+log4js.configure(logconfig);
 
-log4js.configure('logconfig.json');
 const log = log4js.getLogger();
 
 export default log;

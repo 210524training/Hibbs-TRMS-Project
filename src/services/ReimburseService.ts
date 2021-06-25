@@ -13,7 +13,7 @@ export class ReimbursementService{
     //Create-POST:
     addReimbursement(reimbursement: Reimbursement): Promise<boolean> {
         return this.DAO.addReimbursement(new Reimbursement(
-            reimbursement.Type="Reimbursement",
+            reimbursement.ObjType="Reimbursement",
             reimbursement.ID=uuid.v4(),
             reimbursement.ammount,
             reimbursement.status,
@@ -39,7 +39,7 @@ export class ReimbursementService{
     //Update-PUT:
     updateReimbursement(reimbursement: Reimbursement): Promise<boolean> {
         return this.DAO.update_reimbursement(new Reimbursement(
-            reimbursement.Type="Reimbursement",
+            reimbursement.ObjType="Reimbursement",
             reimbursement.ID,
             reimbursement.ammount,
             reimbursement.status,

@@ -3,11 +3,11 @@ import uuid from 'uuid';
 
 export default class BenCo extends employee{
     constructor(
-        public Type: "Benefits Controller",
+        public ObjType: "Benefits Controller",
         public ID: string=uuid.v4(),
         public username:String,
         public password:string,
-        public name:string,
+        public RealName:string,
         public pendingReimbursements:number,
         public awardedReimbursements:number,
         public usedReimbursements:number=pendingReimbursements+awardedReimbursements,
@@ -15,7 +15,7 @@ export default class BenCo extends employee{
         public supervisor:null | string,
         public department:string,
     ) {
-        super(Type,ID,username,password,name,pendingReimbursements,awardedReimbursements,usedReimbursements,availableReimbursements,supervisor,department);
+        super(ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursements,availableReimbursements,supervisor,department);
     }
 };
 //export function makebenCo(ID:string=uuid.v4(),username:string,password:string,name:string,pendingReimbursements:number,awardedReimbursements:number,supervisor:string,department:string){

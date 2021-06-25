@@ -39,14 +39,14 @@ export class DeptHeadDAO{
         async getAllDepartmentHeads(): Promise<departmentHead[]>{
             const params: DocumentClient.QueryInput={
                 TableName: 'TRMS-data',
-                KeyConditionExpression: '#T = :D',
+                KeyConditionExpression: '#o = :D',
                 ExpressionAttributeNames: {
-                  '#T': 'Type',
+                  '#o': 'ObjType',
                 },
                 ExpressionAttributeValues: {
                   ':D': 'Department Head',
                 },
-                ProjectionExpression:'Type,ID,username,password,name,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
+                ProjectionExpression:'ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
             };
             const data=await this.client.query(params).promise();
             return data.Items as departmentHead[];
@@ -61,7 +61,7 @@ export class DeptHeadDAO{
                     Type:'Department Head',
                     ID,
                 },
-                ProjectionExpression:'Type,ID,username,password,name,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
+                ProjectionExpression:'ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
                 };
     
             const data=await this.client.get(params).promise();
@@ -77,12 +77,12 @@ export class DeptHeadDAO{
             const params: DocumentClient.QueryInput={
                 TableName:'TRMS-data',
                 IndexName:'username',
-                KeyConditionExpression:'Type=:t AND username=:u',
+                KeyConditionExpression:'ObjType=:o AND username=:u',
                 ExpressionAttributeValues:{
-                    ':t':'Department Head',
+                    ':o':'Department Head',
                     ':u':username,
                 },
-                ProjectionExpression:'Type,ID,username,password,name,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
+                ProjectionExpression:'ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
             };
             const data= await this.client.query(params).promise();
             if(!data.Items || data.Count===0){

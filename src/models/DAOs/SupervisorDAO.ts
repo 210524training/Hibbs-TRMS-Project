@@ -39,14 +39,14 @@ export class SupervisorDAO{
         async getAllSupervisors(): Promise<supervisor[]>{
             const params: DocumentClient.QueryInput={
                 TableName: 'TRMS-data',
-                KeyConditionExpression: '#T = :S',
+                KeyConditionExpression: '#o = :S',
                 ExpressionAttributeNames: {
-                  '#T': 'Type',
+                  '#o': 'ObjType',
                 },
                 ExpressionAttributeValues: {
                   ':S': 'Supervisor',
                 },
-                ProjectionExpression:'Type,ID,username,password,name,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
+                ProjectionExpression:'ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
             };
             const data=await this.client.query(params).promise();
             return data.Items as supervisor[];
@@ -62,7 +62,7 @@ export class SupervisorDAO{
                     Type:'Supervisor',
                     ID,
                 },
-                ProjectionExpression:'Type,ID,username,password,name,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
+                ProjectionExpression:'ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
                 };
     
             const data=await this.client.get(params).promise();
@@ -83,7 +83,7 @@ export class SupervisorDAO{
                     ':t':'Supervisor',
                     ':u':username,
                 },
-                ProjectionExpression:'Type,ID,username,password,name,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
+                ProjectionExpression:'Type,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
             };
             const data= await this.client.query(params).promise();
             if(!data.Items || data.Count===0){

@@ -39,14 +39,14 @@ export class RequestDAO{
         async getAllRequests(): Promise<request[]>{
             const params: DocumentClient.QueryInput={
                 TableName: 'TRMS-data',
-                KeyConditionExpression: '#T = :r',
+                KeyConditionExpression: '#o = :r',
                 ExpressionAttributeNames: {
-                  '#T': 'Type',
+                  '#o': 'ObjType',
                 },
                 ExpressionAttributeValues: {
                   ':r': 'Request',
                 },
-                ProjectionExpression:'Type,ID,amount,status,eventType,reimbursePortion,Date'
+                ProjectionExpression:'ObjType,ID,amount,status,eventType,reimbursePortion,Date'
             };
             const data=await this.client.query(params).promise();
             return data.Items as request[];
@@ -61,7 +61,7 @@ export class RequestDAO{
                     Type:'Request',
                     ID,
                 },
-                ProjectionExpression:'Type,ID,amount,status,eventType,reimbursePortion,Date'
+                ProjectionExpression:'ObjType,ID,amount,status,eventType,reimbursePortion,Date'
                 };
     
             const data=await this.client.get(params).promise();

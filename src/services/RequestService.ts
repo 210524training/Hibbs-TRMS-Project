@@ -12,7 +12,7 @@ export class RequestService{
     //Create-POST:
     addRequest(request: Request): Promise<boolean> {
         return this.DAO.addRequest(new Request(
-            request.Type="Request",
+            request.ObjType="Request",
             request.ID=uuid.v4(),
             request.ammount,
             request.status,
@@ -38,7 +38,7 @@ export class RequestService{
     //Update-PUT:
     updateReimbursement(request: Request): Promise<boolean> {
         return this.DAO.update_request(new Request(
-            request.Type="Request",
+            request.ObjType="Request",
             request.ID,
             request.ammount,
             request.status,

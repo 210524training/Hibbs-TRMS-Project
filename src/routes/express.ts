@@ -1,5 +1,6 @@
+//import bodyParser from 'body-parser';
 import expressSession from 'express-session';
-import express, { Request, Response, NextFunction } from 'express';
+import Express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors' ;
 import { NoUserFoundError, PasswordNotMatchesError, AuthenticationError } from '../errors';
 import path from 'path';
@@ -13,7 +14,7 @@ import baseRouter from './baserouter';
 dotenv.config({});
 
 
-const app = express();
+const app = Express();
 
 
 app.use(helmet());
@@ -23,9 +24,10 @@ app.use(cors({
     process.env.WEB_CLIENT_ORIGIN || 'http://localhost:5000',
   ],
 }));
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(Express.json());
+app.use(Express.urlencoded({extended: true}));
+//app.use(bodyParser.urlencoded({extended: true}))
+app.use(Express.static(path.join(__dirname, '../public')));
 app.use(expressSession({
   secret: 'Not_Actually_Secret',
   cookie: {},

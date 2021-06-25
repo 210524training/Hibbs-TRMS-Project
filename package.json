@@ -10,7 +10,7 @@
     "lint": "eslint **",
     "lint:fix": "eslint ** --fix",
     "tsc": "tsc",
-    "build": "ts-node build.ts"
+    "build": "ts-node ./src/build.ts"
   },
   "author": "IkenoXamos",
   "license": "ISC",
@@ -37,6 +37,7 @@
     "@types/uuid": "^8.3.0",
     "aws-sdk": "^2.920.0",
     "axios": "^0.21.1",
+    "commonjs": "^0.0.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",

@@ -1,4 +1,4 @@
-import app from './src/routes/express';
+import app from './routes/express';
 
 const port = process.env.PORT || 5000;
 

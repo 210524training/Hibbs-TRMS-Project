@@ -3,11 +3,11 @@ import uuid from 'uuid';
 
 export default class DepartmentHead extends supervisor{
     constructor(
-        public Type: "Department Head",
+        public ObjType: "Department Head",
         public ID: string=uuid.v4(),
         public username:String,
         public password:string,
-        public name:string,
+        public RealName:string,
         public pendingReimbursements:number,
         public awardedReimbursements:number,
         public usedReimbursements:number=pendingReimbursements+awardedReimbursements,
@@ -16,7 +16,7 @@ export default class DepartmentHead extends supervisor{
         public department:string,
         public superviseeNames:string[] | null,
     ) {
-        super(Type,ID,username,password,name,pendingReimbursements,awardedReimbursements,usedReimbursements,availableReimbursements,supervisor,department,superviseeNames);
+        super(ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursements,availableReimbursements,supervisor,department,superviseeNames);
     }
 };
 //export function makeDeptHead(ID:string=uuid.v4(),username:string,password:string,name:string,pendingReimbursements:number,awardedReimbursements:number,supervisor:string,department:string){

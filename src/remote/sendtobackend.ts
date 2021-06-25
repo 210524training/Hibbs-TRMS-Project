@@ -1,10 +1,10 @@
-import TRMSClient from "./axios";
+import TRMSClient from "./axiosClient";
 import employee from '../models/employee';
 import supervisor from '../models/supervisor';
 import departmentHead from '../models/departmentHead';
 import benCo from '../models/BenCo';
 
-export const sendEmployeeLogin = async (username: string, password: string): Promise<employee> => {
+export async function  sendEmployeeLogin(username: string, password: string): Promise<employee> {
   const {data: Employee} = await TRMSClient.post<employee>('/employeeLogin', {
     username,
     password,
@@ -13,7 +13,7 @@ export const sendEmployeeLogin = async (username: string, password: string): Pro
   return Employee;
 }
 
-export const sendSupervisorLogin = async (username: string, password: string): Promise<supervisor> => {
+export async function sendSupervisorLogin(username: string, password: string): Promise<supervisor>{
   const {data: Supervisor} = await TRMSClient.post<supervisor>('/supervisorLogin', {
     username,
     password,
@@ -22,7 +22,7 @@ export const sendSupervisorLogin = async (username: string, password: string): P
   return Supervisor;
 }
 
-export const sendDeptHeadLogin = async (username: string, password: string): Promise<departmentHead> => {
+export async function sendDeptHeadLogin(username: string, password: string): Promise<departmentHead>{
   const {data: DeptHead} = await TRMSClient.post<departmentHead>('/departmentHeadLogin', {
     username,
     password,
@@ -31,7 +31,7 @@ export const sendDeptHeadLogin = async (username: string, password: string): Pro
   return DeptHead;
 }
 
-export const sendBenCoLogin = async (username: string, password: string): Promise<benCo> => {
+export async function sendBenCoLogin(username: string, password: string): Promise<benCo>{
   const {data: Benco} = await TRMSClient.post<benCo>('/benCoLogin', {
     username,
     password,

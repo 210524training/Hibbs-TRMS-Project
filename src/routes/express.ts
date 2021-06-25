@@ -27,7 +27,7 @@ app.use(cors({
 app.use(Express.json());
 app.use(Express.urlencoded({extended: true}));
 //app.use(bodyParser.urlencoded({extended: true}))
-app.use(Express.static(path.join(__dirname, '../public')));
+app.use(Express.static(path.join(__dirname, '../public/views')));
 app.use(expressSession({
   secret: 'Not_Actually_Secret',
   cookie: {},

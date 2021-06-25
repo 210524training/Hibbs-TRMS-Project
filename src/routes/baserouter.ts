@@ -20,7 +20,11 @@ import requestservice from '../services/RequestService';
 
 const baseRouter=Router();
 
-
+/*
+baseRouter.get('/employeeLogin',async (req: express.Request<unknown, unknown, { username: string, password: string }, unknown, {}>, res) => {
+    res.send()
+});
+*/
 
 baseRouter.post('/employeeLogin', async (req: express.Request<unknown, unknown, { username: string, password: string }, unknown, {}>, res) => {
     const { username, password } = req.body;

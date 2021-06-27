@@ -42,11 +42,12 @@ export class ReimbursementDAO{
                 KeyConditionExpression: '#o = :r',
                 ExpressionAttributeNames: {
                   '#o': 'ObjType',
+                  '#s':'status'
                 },
                 ExpressionAttributeValues: {
                   ':r': 'Reimbursement',
                 },
-                ProjectionExpression:'ObjType,ID,amount,status,eventType,reimbursePortion,Date'
+                ProjectionExpression:'ObjType,ID,amount,#s,eventType,reimbursePortion,Date'
             };
             const data=await this.client.query(params).promise();
             return data.Items as reimbursement[];

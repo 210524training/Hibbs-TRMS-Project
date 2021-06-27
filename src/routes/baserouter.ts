@@ -16,7 +16,9 @@ import bencoservice from '../services/BenCoService';
 import reimbursementservice from '../services/ReimburseService';
 import requestservice from '../services/RequestService';
 
-
+const cors={
+    origin:"localhost:3050"
+}
 
 const baseRouter=Router();
 
@@ -29,14 +31,16 @@ baseRouter.get('/employeeLogin',async (req: express.Request<unknown, unknown, { 
 baseRouter.post('/employeeLogin', async (req: express.Request<unknown, unknown, { username: string, password: string }, unknown, {}>, res) => {
     const { username, password } = req.body;
     //console.log("username at baseRouter: "+username);
-  
+    //console.log("request reached /employeelogin")
     const employee = await employeeservice.loginEmployee(username, password);
   
     req.session.isLoggedIn = true;
   
     req.session.user = employee;
+
+    //res.header("Access-Control-Allow-Origin",cors.origin);
   
-    res.json(req.session.user);
+    res.json(req.session.user); 
 });
 
 baseRouter.post('/supervisorLogin', async (req: express.Request<unknown, unknown, { username: string, password: string }, unknown, {}>, res) => {
@@ -93,9 +97,9 @@ baseRouter.post('/logout', logout);
 baseRouter.use('/api/v1/employee', employeerouter);
 baseRouter.use('/api/v1/supervisor', supervisorrouter);
 baseRouter.use('/api/v1/departmenthead',deptheadrouter);
-baseRouter.use('api/v1/benCo',bencorouter);
-baseRouter.use('api/v1/reimbursement',reimburserouter);
-baseRouter.use('api/v1/request',requestrouter);
+baseRouter.use('/api/v1/benCo',bencorouter);
+baseRouter.use('/api/v1/reimbursement',reimburserouter);
+baseRouter.use('/api/v1/request',requestrouter);
 
 
 

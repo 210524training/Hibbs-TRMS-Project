@@ -3,7 +3,7 @@ import expressSession from 'express-session';
 import Express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors' ;
 import { NoUserFoundError, PasswordNotMatchesError, AuthenticationError } from '../errors';
-import path from 'path';
+//import path from 'path';
 import StatusCodes from 'http-status-codes';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -13,21 +13,19 @@ import baseRouter from './baserouter';
 
 dotenv.config({});
 
-
+console.log(process.env.WEB_CLIENT_ORIGIN);
 const app = Express();
 
 
 app.use(helmet());
 app.use(cors({
   credentials: true,
-  origin: [
-    process.env.WEB_CLIENT_ORIGIN || 'http://localhost:5000',
-  ],
+  origin: true,
 }));
 app.use(Express.json());
-app.use(Express.urlencoded({extended: true}));
+//app.use(Express.urlencoded({extended: true}));
 //app.use(bodyParser.urlencoded({extended: true}))
-app.use(Express.static(path.join(__dirname, '../public/views')));
+//app.use(Express.static(path.join(__dirname, '../public/views')));
 app.use(expressSession({
   secret: 'Not_Actually_Secret',
   cookie: {},

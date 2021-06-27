@@ -42,11 +42,12 @@ export class RequestDAO{
                 KeyConditionExpression: '#o = :r',
                 ExpressionAttributeNames: {
                   '#o': 'ObjType',
+                  '#s':'status'
                 },
                 ExpressionAttributeValues: {
                   ':r': 'Request',
                 },
-                ProjectionExpression:'ObjType,ID,amount,status,eventType,reimbursePortion,Date'
+                ProjectionExpression:'ObjType,ID,amount,#s,eventType,reimbursePortion,Date'
             };
             const data=await this.client.query(params).promise();
             return data.Items as request[];

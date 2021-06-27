@@ -20,6 +20,8 @@ requestRouter.get('/', async (req, res) => {
 
 requestRouter.get('/:ID', async (req, res) => {
   const { ID } = req.params;
+  console.log(res);
+  console.log(req);
 
   res.json(
     await requestService.getRequestByID(ID),

@@ -4,6 +4,8 @@ import uuid from 'uuid';
 export default class Request extends TableItem{
     constructor(
         public ObjType: "Request",
+        public username:string,
+        public realName:string,
         public ID: string=uuid.v4(),
         public ammount: number,
         public status: "pending" | "approved" | "rejected" | "awarded",

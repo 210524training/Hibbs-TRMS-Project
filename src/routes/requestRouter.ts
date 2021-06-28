@@ -20,15 +20,25 @@ requestRouter.get('/', async (req, res) => {
 
 requestRouter.get('/:ID', async (req, res) => {
   const { ID } = req.params;
-  console.log(res);
-  console.log(req);
+  //onsole.log(res);
+  //console.log(req);
 
   res.json(
     await requestService.getRequestByID(ID),
   );
 });
 
-requestRouter.post('/', async (req: express.Request<unknown, unknown, request, unknown, {}>, res) => {
+requestRouter.get('/:username', async (req, res) => {
+  const { username } = req.params;
+  //console.log(req);
+  //console.log(res);
+
+  res.json(
+    await requestService.getRequestByUsername(username),
+  );
+});
+
+requestRouter.post('/addRequest', async (req: express.Request<unknown, unknown, request, unknown, {}>, res) => {
     res.json(
       await requestService.addRequest(req.body),
     );

@@ -42,12 +42,13 @@ export class RequestDAO{
                 KeyConditionExpression: '#o = :r',
                 ExpressionAttributeNames: {
                   '#o': 'ObjType',
-                  '#s':'status'
+                  '#s':'status',
+                  '#d':'Date',
                 },
                 ExpressionAttributeValues: {
                   ':r': 'Request',
                 },
-                ProjectionExpression:'ObjType,ID,amount,#s,eventType,reimbursePortion,Date'
+                ProjectionExpression:'ObjType,ID,amount,#s,eventType,reimbursePortion,#d'
             };
             const data=await this.client.query(params).promise();
             return data.Items as request[];
@@ -62,7 +63,11 @@ export class RequestDAO{
                     Type:'Request',
                     ID,
                 },
-                ProjectionExpression:'ObjType,ID,amount,status,eventType,reimbursePortion,Date'
+                ExpressionAttributeNames:{
+                    '#s':'status',
+                    '#d':'Date',
+                },
+                ProjectionExpression:'ObjType,ID,amount,#s,eventType,reimbursePortion,#d'
                 };
     
             const data=await this.client.get(params).promise();
@@ -70,6 +75,36 @@ export class RequestDAO{
         }
 
 
+        //getbyname:
+        async getRequestByUsername(username:string):Promise<request[]|null>{
+            const params: DocumentClient.QueryInput={
+                TableName:'TRMS-data',
+                IndexName:'username',
+                KeyConditionExpression:'ObjType=:o AND username=:u',
+                FilterExpression:':u=#u',
+                ExpressionAttributeValues:{
+                    ':o':"Employee",
+                    ':u':username
+                },
+                ExpressionAttributeNames:{
+                    '#s':'status',
+                    '#d':"Date",
+                    '#u':'username'
+                },
+                ProjectionExpression:'ObjType,#u,realName,ID,amount,#s,eventType,reimbursePortion,#d'
+            };
+            
+            let userRequests: request[]=[];
+            const data=await this.client.query(params).promise();
+            if(!data.Items ||data.Count===0){
+                return null;
+            }else{
+                for(let i=0; i<data.Items.length;i++){
+                    userRequests.push(data.Items[i] as request);
+                }
+            };
+            return userRequests;
+        };
         //getbydate:
 
 

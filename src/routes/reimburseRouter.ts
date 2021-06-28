@@ -20,15 +20,25 @@ reimbursementRouter.get('/', async (req, res) => {
 
 reimbursementRouter.get('/:ID', async (req, res) => {
   const { ID } = req.params;
-  console.log(req);
-  console.log(res);
+  //console.log(req);
+  //console.log(res);
 
   res.json(
     await reimbursementService.getReimbursementByID(ID),
   );
 });
 
-reimbursementRouter.post('/', async (req: express.Request<unknown, unknown, reimbursement, unknown, {}>, res) => {
+reimbursementRouter.get('/:username', async (req, res) => {
+  const { username } = req.params;
+  //console.log(req);
+  //console.log(res);
+
+  res.json(
+    await reimbursementService.getReimbursementByUsername(username),
+  );
+});
+
+reimbursementRouter.post('/addReimbursement', async (req: express.Request<unknown, unknown, reimbursement, unknown, {}>, res) => {
     res.json(
       await reimbursementService.addReimbursement(req.body),
     );

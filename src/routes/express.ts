@@ -13,7 +13,7 @@ import baseRouter from './baserouter';
 
 dotenv.config({});
 
-console.log(process.env.WEB_CLIENT_ORIGIN);
+//console.log(process.env.WEB_CLIENT_ORIGIN);
 const app = Express();
 
 
@@ -28,7 +28,9 @@ app.use(Express.json());
 //app.use(Express.static(path.join(__dirname, '../public/views')));
 app.use(expressSession({
   secret: 'Not_Actually_Secret',
-  cookie: {},
+  cookie: {secure:false},
+  resave:false,
+  saveUninitialized:false,
 }));
 
 app.use('/', baseRouter);

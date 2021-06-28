@@ -14,6 +14,8 @@ export class ReimbursementService{
     addReimbursement(reimbursement: Reimbursement): Promise<boolean> {
         return this.DAO.addReimbursement(new Reimbursement(
             reimbursement.ObjType="Reimbursement",
+            reimbursement.username,
+            reimbursement.realName,
             reimbursement.ID=uuid.v4(),
             reimbursement.ammount,
             reimbursement.status,
@@ -36,11 +38,17 @@ export class ReimbursementService{
         return this.DAO.getReimbursementByID(ID);
       }
 
-
-    //Update-PUT:
+    //getbyusername:
+    getReimbursementByUsername(username:string):Promise<Reimbursement[]|null>{
+      return this.DAO.getReimbursementByUsername(username);
+    }
+    
+      //Update-PUT:
     updateReimbursement(reimbursement: Reimbursement): Promise<boolean> {
         return this.DAO.update_reimbursement(new Reimbursement(
             reimbursement.ObjType="Reimbursement",
+            reimbursement.username,
+            reimbursement.realName,
             reimbursement.ID,
             reimbursement.ammount,
             reimbursement.status,

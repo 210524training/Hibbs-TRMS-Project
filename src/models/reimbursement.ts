@@ -4,6 +4,8 @@ import uuid from 'uuid';
 export default class Reimbursement extends TableItem{
     constructor(
         public ObjType: "Reimbursement",
+        public username:string,
+        public realName:string,
         public ID: string=uuid.v4(),
         public ammount: number,
         public status: "pending" | "approved" | "rejected" | "awarded",

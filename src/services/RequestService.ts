@@ -13,6 +13,8 @@ export class RequestService{
     addRequest(request: Request): Promise<boolean> {
         return this.DAO.addRequest(new Request(
             request.ObjType="Request",
+            request.username,
+            request.realName,
             request.ID=uuid.v4(),
             request.ammount,
             request.status,
@@ -34,11 +36,17 @@ export class RequestService{
         return this.DAO.getRequestByID(ID);
       }
 
-
-    //Update-PUT:
+    //getbyusername:
+    getRequestByUsername(username:string):Promise<Request[]|null>{
+      return this.DAO.getRequestByUsername(username);
+    };
+    
+      //Update-PUT:
     updateReimbursement(request: Request): Promise<boolean> {
         return this.DAO.update_request(new Request(
             request.ObjType="Request",
+            request.username,
+            request.realName,
             request.ID,
             request.ammount,
             request.status,

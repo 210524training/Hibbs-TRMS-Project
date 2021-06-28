@@ -26,6 +26,14 @@ employeeRouter.get('/:ID', async (req, res) => {
   );
 });
 
+employeeRouter.get('/:username', async (req, res) => {
+  const { username } = req.params;
+
+  res.json(
+    await employeeService.getEmployeeByUsername(username),
+  );
+});
+
 employeeRouter.post('/', async (req: express.Request<unknown, unknown, employee, unknown, {}>, res) => {
     res.json(
       await employeeService.addEmployee(req.body),

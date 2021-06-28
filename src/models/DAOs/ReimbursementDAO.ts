@@ -42,12 +42,13 @@ export class ReimbursementDAO{
                 KeyConditionExpression: '#o = :r',
                 ExpressionAttributeNames: {
                   '#o': 'ObjType',
-                  '#s':'status'
+                  '#s':'status',
+                  '#d':"Date",
                 },
                 ExpressionAttributeValues: {
                   ':r': 'Reimbursement',
                 },
-                ProjectionExpression:'ObjType,ID,amount,#s,eventType,reimbursePortion,Date'
+                ProjectionExpression:'ObjType,username,realName,ID,amount,#s,eventType,reimbursePortion,#d'
             };
             const data=await this.client.query(params).promise();
             return data.Items as reimbursement[];
@@ -62,12 +63,49 @@ export class ReimbursementDAO{
                     Type:'Reimbursement',
                     ID,
                 },
-                ProjectionExpression:'ObjType,ID,amount,status,eventType,reimbursePortion,Date'
+                ExpressionAttributeNames:{
+                    '#s':'status',
+                    '#d':'Date'
+                },
+                ProjectionExpression:'ObjType,username,realName,ID,amount,#s,eventType,reimbursePortion,#d'
                 };
     
             const data=await this.client.get(params).promise();
             return data.Item as reimbursement;
-        }
+        };
+
+        //getbyname:
+        async getReimbursementByUsername(username:string):Promise<reimbursement[]|null>{
+            const params: DocumentClient.QueryInput={
+                TableName:'TRMS-data',
+                IndexName:'username',
+                KeyConditionExpression:'ObjType=:o AND username=:u',
+                FilterExpression:':u=#u',
+                ExpressionAttributeValues:{
+                    ':o':"Employee",
+                    ':u':username
+                },
+                ExpressionAttributeNames:{
+                    '#s':'status',
+                    '#d':"Date",
+                    '#u':'username'
+                },
+                ProjectionExpression:'ObjType,#u,realName,ID,amount,#s,eventType,reimbursePortion,#d'
+            };
+            
+            let userReimbursements: reimbursement[]=[];
+            const data=await this.client.query(params).promise();
+            if(!data.Items ||data.Count===0){
+                return null;
+            }else{
+                for(let i=0; i<data.Items.length;i++){
+                    userReimbursements.push(data.Items[i] as reimbursement);
+                }
+            };
+            return userReimbursements;
+        };
+
+
 
 
         //getbydate:

@@ -16,11 +16,17 @@ export class RequestService{
             request.username,
             request.realName,
             request.ID=uuid.v4(),
-            request.ammount,
+            request.cost,
             request.status,
             request.eventType,
             request.reimbursePortion,
+            request.expectedAmount,
             request.Date,
+            request.description,
+            request.grade,
+            request.gradeFormat,
+            request.passingGrade,
+            request.presentationSubmission,
           
         ));
       }
@@ -48,11 +54,17 @@ export class RequestService{
             request.username,
             request.realName,
             request.ID,
-            request.ammount,
+            request.cost,
             request.status,
             request.eventType,
             request.reimbursePortion,
+            request.expectedAmount,
             request.Date,
+            request.description,
+            request.grade,
+            request.gradeFormat,
+            request.passingGrade,
+            request.presentationSubmission,
         ));
       }
 

@@ -17,7 +17,7 @@ export class SupervisorDAO{
             TableName: 'TRMS-data',
             Item:{
                 ...supervisor,
-                type:'Supervisor',
+                ObjType:'Supervisor',
             },
             ConditionExpression: 'ID<> :ID',
             ExpressionAttributeValues:{
@@ -59,7 +59,7 @@ export class SupervisorDAO{
             const params: DocumentClient.GetItemInput={
                 TableName: 'TRMS-data',
                 Key: {
-                    Type:'Supervisor',
+                    ObjType:'Supervisor',
                     ID,
                 },
                 ProjectionExpression:'ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
@@ -100,7 +100,7 @@ export class SupervisorDAO{
             TableName:'TRMS-data',
             Item:{
                 ...supervisor,
-                type:'Supervisor',
+                ObjType:'Supervisor',
             },
             ConditionExpression:'ID=:ID',
             ExpressionAttributeValues:{
@@ -122,7 +122,7 @@ export class SupervisorDAO{
         const params: DocumentClient.DeleteItemInput={
             TableName:"TRMS-data",
             Key:{
-                Type:'Supervisor',
+                ObjType:'Supervisor',
                 ID,
             },
         };

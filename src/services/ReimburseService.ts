@@ -17,11 +17,17 @@ export class ReimbursementService{
             reimbursement.username,
             reimbursement.realName,
             reimbursement.ID=uuid.v4(),
-            reimbursement.ammount,
+            reimbursement.cost,
             reimbursement.status,
             reimbursement.eventType,
             reimbursement.reimbursePortion,
+            reimbursement.expectedAmount=reimbursement.cost*reimbursement.reimbursePortion,
             reimbursement.Date,
+            reimbursement.description,
+            reimbursement.grade,
+            reimbursement.gradeFormat,
+            reimbursement.passingGrade,
+            reimbursement.presentationSubmission,
           
         ));
       }
@@ -50,11 +56,17 @@ export class ReimbursementService{
             reimbursement.username,
             reimbursement.realName,
             reimbursement.ID,
-            reimbursement.ammount,
+            reimbursement.cost,
             reimbursement.status,
             reimbursement.eventType,
             reimbursement.reimbursePortion,
+            reimbursement.expectedAmount,
             reimbursement.Date,
+            reimbursement.description,
+            reimbursement.grade,
+            reimbursement.gradeFormat,
+            reimbursement.passingGrade,
+            reimbursement.presentationSubmission,
         ));
       }
 

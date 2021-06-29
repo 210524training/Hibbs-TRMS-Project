@@ -17,7 +17,7 @@ export class BenCoDAO{
             TableName: 'TRMS-data',
             Item:{
                 ...benCo,
-                type:'Benefits Controller',
+                ObjType:'Benefits Controller',
             },
             ConditionExpression: 'ID<> :ID',
             ExpressionAttributeValues:{
@@ -59,7 +59,7 @@ export class BenCoDAO{
             const params: DocumentClient.GetItemInput={
                 TableName: 'TRMS-data',
                 Key: {
-                    Type:'Benefits Controller',
+                    ObjType:'Benefits Controller',
                     ID,
                 },
                 ProjectionExpression:'ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
@@ -101,7 +101,7 @@ export class BenCoDAO{
             TableName:'TRMS-data',
             Item:{
                 ...benCo,
-                type:'Benefits Controller',
+                ObjType:'Benefits Controller',
             },
             ConditionExpression:'ID=:ID',
             ExpressionAttributeValues:{

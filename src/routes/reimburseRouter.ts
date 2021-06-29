@@ -39,7 +39,10 @@ reimbursementRouter.get('/:username', async (req, res) => {
 });
 
 reimbursementRouter.post('/addReimbursement', async (req: express.Request<unknown, unknown, reimbursement, unknown, {}>, res) => {
+    console.log(req.body);
+    //console.log(res.json(req.body));
     res.json(
+      
       await reimbursementService.addReimbursement(req.body),
     );
   });

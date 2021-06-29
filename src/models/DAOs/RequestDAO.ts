@@ -17,7 +17,7 @@ export class RequestDAO{
             TableName: 'TRMS-data',
             Item:{
                 ...request,
-                type:'Request',
+                ObjType:'Request',
             },
             ConditionExpression: 'ID<> :ID',
             ExpressionAttributeValues:{
@@ -44,11 +44,13 @@ export class RequestDAO{
                   '#o': 'ObjType',
                   '#s':'status',
                   '#d':'Date',
+                  '#desc':'description',
+                  '#u':'username',
                 },
                 ExpressionAttributeValues: {
                   ':r': 'Request',
                 },
-                ProjectionExpression:'ObjType,ID,amount,#s,eventType,reimbursePortion,#d'
+                ProjectionExpression:'ObjType,#u,realName,ID,cost,#s,eventType,reimbursePortion,expectedAmount,#d,#desc,grade,gradeFormat,passingGrade,presentationSubmission',
             };
             const data=await this.client.query(params).promise();
             return data.Items as request[];
@@ -60,14 +62,16 @@ export class RequestDAO{
             const params: DocumentClient.GetItemInput={
                 TableName: 'TRMS-data',
                 Key: {
-                    Type:'Request',
+                    ObjType:'Request',
                     ID,
                 },
                 ExpressionAttributeNames:{
                     '#s':'status',
                     '#d':'Date',
+                    '#desc':'description',
+                    '#u':'username'
                 },
-                ProjectionExpression:'ObjType,ID,amount,#s,eventType,reimbursePortion,#d'
+                ProjectionExpression:'ObjType,#u,realName,ID,cost,#s,eventType,reimbursePortion,expectedAmount,#d,#desc,grade,gradeFormat,passingGrade,presentationSubmission',
                 };
     
             const data=await this.client.get(params).promise();
@@ -89,9 +93,10 @@ export class RequestDAO{
                 ExpressionAttributeNames:{
                     '#s':'status',
                     '#d':"Date",
-                    '#u':'username'
+                    '#u':'username',
+                    '#desc':'description',
                 },
-                ProjectionExpression:'ObjType,#u,realName,ID,amount,#s,eventType,reimbursePortion,#d'
+                ProjectionExpression:'ObjType,#u,realName,ID,cost,#s,eventType,reimbursePortion,expectedAmount,#d,#desc,grade,gradeFormat,passingGrade,presentationSubmission',
             };
             
             let userRequests: request[]=[];
@@ -118,7 +123,7 @@ export class RequestDAO{
             TableName:'TRMS-data',
             Item:{
                 ...request,
-                type:'Request',
+                ObjType:'Request',
             },
             ConditionExpression:'ID=:ID',
             ExpressionAttributeValues:{
@@ -140,7 +145,7 @@ export class RequestDAO{
         const params: DocumentClient.DeleteItemInput={
             TableName:"TRMS-data",
             Key:{
-                Type:'Request',
+                ObjType:'Request',
                 ID,
             },
         };

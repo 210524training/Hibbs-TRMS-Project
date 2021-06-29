@@ -17,7 +17,7 @@ async addEmployee(employee: employee):Promise<boolean>{
         TableName: 'TRMS-data',
         Item:{
             ...employee,
-            type:'Employee',
+            ObjType:'Employee',
         },
         ConditionExpression: 'ID<> :ID',
         ExpressionAttributeValues:{
@@ -58,7 +58,7 @@ async getAllEmployees(): Promise<employee[]>{
         const params: DocumentClient.GetItemInput={
             TableName: 'TRMS-data',
             Key: {
-                Type:'Employee',
+                ObjType:'Employee',
                 ID,
             },
             ProjectionExpression:'ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
@@ -103,7 +103,7 @@ async update_Employee(employee:employee):Promise<boolean>{
         TableName:'TRMS-data',
         Item:{
             ...employee,
-            type:'employee',
+            ObjType:'employee',
         },
         ConditionExpression:'ID=:ID',
         ExpressionAttributeValues:{
@@ -125,7 +125,7 @@ async delete_employee(ID:string):Promise<boolean>{
     const params: DocumentClient.DeleteItemInput={
         TableName:"TRMS-data",
         Key:{
-            Type:'Employee',
+            ObjType:'Employee',
             ID,
         },
     };

@@ -17,7 +17,7 @@ export class DeptHeadDAO{
             TableName: 'TRMS-data',
             Item:{
                 ...departmentHead,
-                type:'Department Head',
+                ObjType:'Department Head',
             },
             ConditionExpression: 'ID<> :ID',
             ExpressionAttributeValues:{
@@ -58,7 +58,7 @@ export class DeptHeadDAO{
             const params: DocumentClient.GetItemInput={
                 TableName: 'TRMS-data',
                 Key: {
-                    Type:'Department Head',
+                    ObjType:'Department Head',
                     ID,
                 },
                 ProjectionExpression:'ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
@@ -99,7 +99,7 @@ export class DeptHeadDAO{
             TableName:'TRMS-data',
             Item:{
                 ...departmentHead,
-                type:'Department Head',
+                ObjType:'Department Head',
             },
             ConditionExpression:'ID=:ID',
             ExpressionAttributeValues:{
@@ -122,7 +122,7 @@ export class DeptHeadDAO{
         const params: DocumentClient.DeleteItemInput={
             TableName:"TRMS-data",
             Key:{
-                Type:'Department Head',
+                ObjType:'Department Head',
                 ID,
             },
         };

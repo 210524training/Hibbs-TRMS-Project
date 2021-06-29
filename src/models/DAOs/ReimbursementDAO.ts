@@ -17,7 +17,7 @@ export class ReimbursementDAO{
             TableName: 'TRMS-data',
             Item:{
                 ...reimbursement,
-                type:'Reimbursement',
+                ObjType:'Reimbursement',
             },
             ConditionExpression: 'ID<> :ID',
             ExpressionAttributeValues:{
@@ -44,11 +44,13 @@ export class ReimbursementDAO{
                   '#o': 'ObjType',
                   '#s':'status',
                   '#d':"Date",
+                  '#u':'username',
+                  '#desc':'description',
                 },
                 ExpressionAttributeValues: {
                   ':r': 'Reimbursement',
                 },
-                ProjectionExpression:'ObjType,username,realName,ID,amount,#s,eventType,reimbursePortion,#d'
+                ProjectionExpression:'ObjType,#u,realName,ID,cost,#s,eventType,reimbursePortion,expectedAmount,#d,#desc,grade,gradeFormat,passingGrade,presentationSubmission',
             };
             const data=await this.client.query(params).promise();
             return data.Items as reimbursement[];
@@ -60,14 +62,16 @@ export class ReimbursementDAO{
             const params: DocumentClient.GetItemInput={
                 TableName: 'TRMS-data',
                 Key: {
-                    Type:'Reimbursement',
+                    ObjType:'Reimbursement',
                     ID,
                 },
                 ExpressionAttributeNames:{
                     '#s':'status',
-                    '#d':'Date'
+                    '#d':'Date',
+                    '#u':'username',
+                    '#desc':'description',
                 },
-                ProjectionExpression:'ObjType,username,realName,ID,amount,#s,eventType,reimbursePortion,#d'
+                ProjectionExpression:'ObjType,#u,realName,ID,cost,#s,eventType,reimbursePortion,expectedAmount,#d,#desc,grade,gradeFormat,passingGrade,presentationSubmission',
                 };
     
             const data=await this.client.get(params).promise();
@@ -88,9 +92,10 @@ export class ReimbursementDAO{
                 ExpressionAttributeNames:{
                     '#s':'status',
                     '#d':"Date",
-                    '#u':'username'
+                    '#u':'username',
+                    '#desc':'description',
                 },
-                ProjectionExpression:'ObjType,#u,realName,ID,amount,#s,eventType,reimbursePortion,#d'
+                ProjectionExpression:'ObjType,#u,realName,ID,cost,#s,eventType,reimbursePortion,expectedAmount,#d,#desc,grade,gradeFormat,passingGrade,presentationSubmission',
             };
             
             let userReimbursements: reimbursement[]=[];
@@ -121,13 +126,14 @@ export class ReimbursementDAO{
             TableName:'TRMS-data',
             Item:{
                 ...reimbursement,
-                type:'Reimbursement',
+                ObjType:'Reimbursement',
             },
             ConditionExpression:'ID=:ID',
             ExpressionAttributeValues:{
             ':ID':reimbursement.ID,
             },
         };
+        console.log(reimbursement);
         try{
             await this.client.put(params).promise();
             return true;
@@ -143,7 +149,7 @@ export class ReimbursementDAO{
         const params: DocumentClient.DeleteItemInput={
             TableName:"TRMS-data",
             Key:{
-                Type:'Reimbursement',
+                ObjType:'Reimbursement',
                 ID,
             },
         };

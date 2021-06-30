@@ -35,7 +35,8 @@ export class ReimbursementService{
     //Read-GET:
     //getall:
      getAllReimbursements(): Promise<Reimbursement[]> {
-        return this.DAO.getAllReimbursements();
+      console.log('at reimburse get all service')  
+      return this.DAO.getAllReimbursements();
         
       }
 
@@ -46,6 +47,7 @@ export class ReimbursementService{
 
     //getbyusername:
     getReimbursementByUsername(username:string):Promise<Reimbursement[]|null>{
+      console.log("Reached service for username: "+username);
       return this.DAO.getReimbursementByUsername(username);
     }
     

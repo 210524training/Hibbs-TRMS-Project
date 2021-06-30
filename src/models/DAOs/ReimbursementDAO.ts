@@ -12,7 +12,7 @@ export class ReimbursementDAO{
     
     //create
     async addReimbursement(reimbursement:reimbursement ):Promise<boolean>{
-    
+        console.log(reimbursement.Date);
         const params: DocumentClient.PutItemInput={
             TableName: 'TRMS-data',
             Item:{
@@ -37,6 +37,7 @@ export class ReimbursementDAO{
     //read:
         //getall:
         async getAllReimbursements(): Promise<reimbursement[]>{
+            console.log('at get all reimburse DAO')
             const params: DocumentClient.QueryInput={
                 TableName: 'TRMS-data',
                 KeyConditionExpression: '#o = :r',
@@ -52,6 +53,7 @@ export class ReimbursementDAO{
                 },
                 ProjectionExpression:'ObjType,#u,realName,ID,cost,#s,eventType,reimbursePortion,expectedAmount,#d,#desc,grade,gradeFormat,passingGrade,presentationSubmission',
             };
+
             const data=await this.client.query(params).promise();
             return data.Items as reimbursement[];
         }
@@ -80,14 +82,18 @@ export class ReimbursementDAO{
 
         //getbyname:
         async getReimbursementByUsername(username:string):Promise<reimbursement[]|null>{
+            console.log("Reached DAO for username: "+username)
+            
+            
+            
             const params: DocumentClient.QueryInput={
                 TableName:'TRMS-data',
                 IndexName:'username',
                 KeyConditionExpression:'ObjType=:o AND username=:u',
-                FilterExpression:':u=#u',
+                //FilterExpression:':u=#u',
                 ExpressionAttributeValues:{
                     ':o':"Employee",
-                    ':u':username
+                    ':u':username,
                 },
                 ExpressionAttributeNames:{
                     '#s':'status',
@@ -97,9 +103,32 @@ export class ReimbursementDAO{
                 },
                 ProjectionExpression:'ObjType,#u,realName,ID,cost,#s,eventType,reimbursePortion,expectedAmount,#d,#desc,grade,gradeFormat,passingGrade,presentationSubmission',
             };
+
+            
+            /*const params: DocumentClient.QueryInput={
+                TableName: 'TRMS-data',
+                
+                KeyConditionExpression: '#o = :r AND #u=:u',
+                
+                ExpressionAttributeNames: {
+                  '#o': 'ObjType',
+                  '#s':'status',
+                  '#d':"Date",
+                  '#u':'username',
+                  '#desc':'description',
+                  "#I":'ID'
+                },
+                ExpressionAttributeValues: {
+                  ':r': 'Reimbursement',
+                  ':u':username,
+                  
+                },
+                ProjectionExpression:'ObjType,#u,realName,ID,cost,#s,eventType,reimbursePortion,expectedAmount,#d,#desc,grade,gradeFormat,passingGrade,presentationSubmission',
+            };*/
             
             let userReimbursements: reimbursement[]=[];
             const data=await this.client.query(params).promise();
+            console.log(data);
             if(!data.Items ||data.Count===0){
                 return null;
             }else{

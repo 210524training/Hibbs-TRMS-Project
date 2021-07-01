@@ -13,7 +13,7 @@ import baseRouter from './baserouter';
 
 dotenv.config({});
 
-//console.log(process.env.WEB_CLIENT_ORIGIN);
+
 const app = Express();
 
 
@@ -23,9 +23,7 @@ app.use(cors({
   origin: true,
 }));
 app.use(Express.json());
-//app.use(Express.urlencoded({extended: true}));
-//app.use(bodyParser.urlencoded({extended: true}))
-//app.use(Express.static(path.join(__dirname, '../public/views')));
+
 app.use(expressSession({
   secret: 'Not_Actually_Secret',
   cookie: {secure:false},
@@ -76,8 +74,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  // TODO: Refactor later that sends back more than just a 400
-  // Because not all requests that fail are the fault of the client
+  
   console.log('Our custom error handler');
   log.error(err);
   res.status(BAD_REQUEST).json({

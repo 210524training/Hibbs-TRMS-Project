@@ -9,14 +9,14 @@ export class ReimbursementService{
         this.DAO= reimbursementDAO;
     }
 
-    //CRUD
-    //Create-POST:
+    
     addReimbursement(reimbursement: Reimbursement): Promise<boolean> {
+      
         return this.DAO.addReimbursement(new Reimbursement(
             reimbursement.ObjType="Reimbursement",
             reimbursement.username,
             reimbursement.realName,
-            reimbursement.ID=uuid.v4(),
+            reimbursement.ID,
             reimbursement.cost,
             reimbursement.status,
             reimbursement.eventType,
@@ -32,28 +32,33 @@ export class ReimbursementService{
         ));
       }
 
-    //Read-GET:
-    //getall:
+    
      getAllReimbursements(): Promise<Reimbursement[]> {
-      console.log('at reimburse get all service')  
+      
       return this.DAO.getAllReimbursements();
         
       }
 
-    //getbyid:
+    
     getReimbursementByID(ID: string): Promise<Reimbursement | null> {
         return this.DAO.getReimbursementByID(ID);
       }
 
-    //getbyusername:
+    
     getReimbursementByUsername(username:string):Promise<Reimbursement[]|null>{
-      console.log("Reached service for username: "+username);
+      
       return this.DAO.getReimbursementByUsername(username);
     }
+
+    getReimbursementByStatus(status:string):Promise<Reimbursement[]|null>{
+      
+      return this.DAO.getReimbursementByStatus(status);
+    }
     
-      //Update-PUT:
+      
     updateReimbursement(reimbursement: Reimbursement): Promise<boolean> {
-        return this.DAO.update_reimbursement(new Reimbursement(
+       
+      return this.DAO.update_reimbursement(new Reimbursement(
             reimbursement.ObjType="Reimbursement",
             reimbursement.username,
             reimbursement.realName,
@@ -72,9 +77,11 @@ export class ReimbursementService{
         ));
       }
 
+      
 
-    //Delete-DELETE:
+    
     deleteReimbursement(ID: string): Promise<boolean> {
+      //console.log("delete service: "+ID)
         return this.DAO.delete_reimbursement(ID);
       }
 }

@@ -22,23 +22,18 @@ const cors={
 
 const baseRouter=Router();
 
-/*
-baseRouter.get('/employeeLogin',async (req: express.Request<unknown, unknown, { username: string, password: string }, unknown, {}>, res) => {
-    res.send()
-});
-*/
+
 
 baseRouter.post('/employeeLogin', async (req: express.Request<unknown, unknown, { username: string, password: string }, unknown, {}>, res) => {
     const { username, password } = req.body;
-    //console.log("username at baseRouter: "+username);
-    //console.log("request reached /employeelogin")
+    
     const employee = await employeeservice.loginEmployee(username, password);
   
     req.session.isLoggedIn = true;
   
     req.session.user = employee;
 
-    //res.header("Access-Control-Allow-Origin",cors.origin);
+    
   
     res.json(req.session.user); 
 });
@@ -84,7 +79,7 @@ export async function logout(req: express.Request, res: express.Response): Promi
       const { username } = req.session.user;
   
       req.session.destroy(() => {
-        console.log(`${username} logged out`);
+
       });
     }
     

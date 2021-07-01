@@ -7,7 +7,7 @@ import session from 'express-session'
 const requestRouter = Router();
 
 requestRouter.get('/', async (req, res) => {
-  console.log('Reached our request router get all function');
+  
 
   if(!req.session.isLoggedIn || !req.session.user) {
     throw new AuthenticationError('You must be logged in to access this functionality');
@@ -20,8 +20,7 @@ requestRouter.get('/', async (req, res) => {
 
 requestRouter.get('/:ID', async (req, res) => {
   const { ID } = req.params;
-  //onsole.log(res);
-  //console.log(req);
+  
 
   res.json(
     await requestService.getRequestByID(ID),
@@ -30,8 +29,7 @@ requestRouter.get('/:ID', async (req, res) => {
 
 requestRouter.get('/:username', async (req, res) => {
   const { username } = req.params;
-  //console.log(req);
-  //console.log(res);
+  
 
   res.json(
     await requestService.getRequestByUsername(username),

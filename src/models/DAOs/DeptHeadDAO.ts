@@ -9,10 +9,7 @@ export class DeptHeadDAO{
     constructor(){
         this.client=myDocClient;
     }
-    
-    //create
     async addDepartmentHead(departmentHead: departmentHead):Promise<boolean>{
-    
         const params: DocumentClient.PutItemInput={
             TableName: 'TRMS-data',
             Item:{
@@ -32,68 +29,57 @@ export class DeptHeadDAO{
             return false;
         }
     }
-    
-    
-    //read:
-        //getall:
-        async getAllDepartmentHeads(): Promise<departmentHead[]>{
+    async getAllDepartmentHeads(): Promise<departmentHead[]>{
             const params: DocumentClient.QueryInput={
                 TableName: 'TRMS-data',
                 KeyConditionExpression: '#o = :D',
                 ExpressionAttributeNames: {
                   '#o': 'ObjType',
+                  '#s':'status',
+                  '#u':'username',
                 },
                 ExpressionAttributeValues: {
                   ':D': 'Department Head',
                 },
-                ProjectionExpression:'ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
+                ProjectionExpression:'#o,ID,#u,password,RealName,#s,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
             };
             const data=await this.client.query(params).promise();
             return data.Items as departmentHead[];
         }
-
-    
-        //getbyid:
-        async getDeptHeadByID(ID: string): Promise<departmentHead | null>{
+    async getDeptHeadByID(ID: string): Promise<departmentHead | null>{
             const params: DocumentClient.GetItemInput={
                 TableName: 'TRMS-data',
                 Key: {
                     ObjType:'Department Head',
                     ID,
                 },
-                ProjectionExpression:'ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
+                ProjectionExpression:'ObjType,ID,username,password,RealName,status,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
                 };
     
             const data=await this.client.get(params).promise();
             return data.Item as departmentHead;
         }
-
-
-        //getbyname:
-
-
-        //getbyusername;
-        async getDeptHeadByUsername(username:string):Promise<departmentHead|null>{
+    async getDeptHeadByUsername(username:string):Promise<departmentHead|null>{
             const params: DocumentClient.QueryInput={
                 TableName:'TRMS-data',
                 IndexName:'username',
-                KeyConditionExpression:'ObjType=:o AND username=:u',
+                KeyConditionExpression:'#o=:o AND #u=:u',
                 ExpressionAttributeValues:{
                     ':o':'Department Head',
                     ':u':username,
                 },
-                ProjectionExpression:'ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
+                ExpressionAttributeNames: {
+                    '#o': 'ObjType',
+                    '#s':'status',
+                    '#u':'username',
+                  },
+                ProjectionExpression:'#o,ID,#u,password,RealName,#s,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
             };
             const data= await this.client.query(params).promise();
             if(!data.Items || data.Count===0){
                 return null;
             }
-    
             return data.Items[0] as departmentHead;}
-    
-    
-    
-    //update:
     async update_departmentHead(departmentHead:departmentHead):Promise<boolean>{
         const params: DocumentClient.PutItemInput={
             TableName:'TRMS-data',
@@ -114,10 +100,6 @@ export class DeptHeadDAO{
             return false;
         }
     }
-    
-    
-    
-    //delete
     async delete_departmentHead(ID:string):Promise<boolean>{
         const params: DocumentClient.DeleteItemInput={
             TableName:"TRMS-data",
@@ -133,9 +115,6 @@ export class DeptHeadDAO{
             console.log('Failed to delete department head: ',error);
             return false;
         };
-    }
-    
-    
-    }
+    }}
     const deptHeadDAO = new DeptHeadDAO();
     export default deptHeadDAO;

@@ -8,6 +8,7 @@ export default class DepartmentHead extends supervisor{
         public username:String,
         public password:string,
         public RealName:string,
+        public status:string='null',
         public pendingReimbursements:number,
         public awardedReimbursements:number,
         public usedReimbursements:number=pendingReimbursements+awardedReimbursements,
@@ -16,10 +17,6 @@ export default class DepartmentHead extends supervisor{
         public department:string,
         public superviseeNames:string[] | null,
     ) {
-        super(ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursements,availableReimbursements,supervisor,department,superviseeNames);
+        super(ObjType,ID,username,password,RealName,status,pendingReimbursements,awardedReimbursements,usedReimbursements,availableReimbursements,supervisor,department,superviseeNames);
     }
 };
-//export function makeDeptHead(ID:string=uuid.v4(),username:string,password:string,name:string,pendingReimbursements:number,awardedReimbursements:number,supervisor:string,department:string){
-//    let Dept=new DepartmentHead("Department Head",ID=uuid.v4(),username,password,name,pendingReimbursements,awardedReimbursements,pendingReimbursements+awardedReimbursements,1000-(pendingReimbursements+awardedReimbursements),supervisor,department,null);
-//    return Dept;
-//}

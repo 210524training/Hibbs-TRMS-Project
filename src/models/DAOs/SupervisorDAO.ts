@@ -10,7 +10,7 @@ export class SupervisorDAO{
         this.client=myDocClient;
     }
     
-    //create
+    
     async addSupervisor(supervisor: supervisor):Promise<boolean>{
     
         const params: DocumentClient.PutItemInput={
@@ -32,58 +32,51 @@ export class SupervisorDAO{
             return false;
         }
     }
-    
-    
-    //read:
-        //getall:
-        async getAllSupervisors(): Promise<supervisor[]>{
+    async getAllSupervisors(): Promise<supervisor[]>{
             const params: DocumentClient.QueryInput={
                 TableName: 'TRMS-data',
-                KeyConditionExpression: '#o = :S',
+                KeyConditionExpression: '#o = :o',
                 ExpressionAttributeNames: {
                   '#o': 'ObjType',
+                  '#s':'status',
+                  '#u':'username',
                 },
                 ExpressionAttributeValues: {
-                  ':S': 'Supervisor',
+                  ':o': 'Supervisor',
                 },
-                ProjectionExpression:'ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
+                ProjectionExpression:'#o,ID,#u,password,RealName,#s,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
             };
             const data=await this.client.query(params).promise();
             return data.Items as supervisor[];
         }
-           
-
-    
-        //getbyid:
-        async getSupervisorByID(ID: string): Promise<supervisor | null>{
+    async getSupervisorByID(ID: string): Promise<supervisor | null>{
             const params: DocumentClient.GetItemInput={
                 TableName: 'TRMS-data',
                 Key: {
                     ObjType:'Supervisor',
                     ID,
                 },
-                ProjectionExpression:'ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
+                ProjectionExpression:'ObjType,ID,username,password,RealName,status,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
                 };
     
             const data=await this.client.get(params).promise();
             return data.Item as supervisor;
         }
-
-
-        //getbyname:
-
-
-        //getbyusername:
-        async getSupervisorByUsername(username:string):Promise<supervisor|null>{
+    async getSupervisorByUsername(username:string):Promise<supervisor|null>{
             const params: DocumentClient.QueryInput={
                 TableName:'TRMS-data',
                 IndexName:'username',
-                KeyConditionExpression:'ObjType=:o AND username=:u',
+                KeyConditionExpression:'#o=:o AND #u=:u',
                 ExpressionAttributeValues:{
                     ':o':'Supervisor',
                     ':u':username,
                 },
-                ProjectionExpression:'ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
+                ExpressionAttributeNames: {
+                    '#o': 'ObjType',
+                    '#s':'status',
+                    '#u':'username',
+                  },
+                ProjectionExpression:'#o,ID,#u,password,RealName,#s,pendingReimbursements,awardedReimbursements,usedReimbursments,availableReimbursements,supervisor,department'
             };
             const data= await this.client.query(params).promise();
             if(!data.Items || data.Count===0){
@@ -91,10 +84,6 @@ export class SupervisorDAO{
             }
     
             return data.Items[0] as supervisor;}
-    
-    
-    
-    //update
     async update_supervisor(supervisor:supervisor):Promise<boolean>{
         const params: DocumentClient.PutItemInput={
             TableName:'TRMS-data',
@@ -115,9 +104,6 @@ export class SupervisorDAO{
             return false;
         }
     }
-    
-    
-    //delete
     async delete_supervisor(ID:string):Promise<boolean>{
         const params: DocumentClient.DeleteItemInput={
             TableName:"TRMS-data",
@@ -133,9 +119,6 @@ export class SupervisorDAO{
             console.log('Failed to delete supervisor: ',error);
             return false;
         };
-    }
-    
-    
-    }
+    }}
     const supervisorDAO = new SupervisorDAO();
     export default supervisorDAO;

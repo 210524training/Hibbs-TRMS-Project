@@ -7,7 +7,6 @@ import session from 'express-session'
 const benCoRouter = Router();
 
 benCoRouter.get('/', async (req, res) => {
-  console.log('Reached our benefits controller router get all function');
 
   if(!req.session.isLoggedIn || !req.session.user) {
     throw new AuthenticationError('You must be logged in to access this functionality');

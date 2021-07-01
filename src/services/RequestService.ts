@@ -8,14 +8,13 @@ export class RequestService{
     constructor(){
         this.DAO= requestDAO;
     }
-    //CRUD
-    //Create-POST:
+    
     addRequest(request: Request): Promise<boolean> {
         return this.DAO.addRequest(new Request(
             request.ObjType="Request",
             request.username,
             request.realName,
-            request.ID=uuid.v4(),
+            request.ID,
             request.cost,
             request.status,
             request.eventType,
@@ -31,23 +30,22 @@ export class RequestService{
         ));
       }
 
-    //Read-GET:
-    //getall:
+    
     getAllRequests(): Promise<Request[]> {
         return this.DAO.getAllRequests();
       }
 
-    //getbyid:
+    
     getRequestByID(ID: string): Promise<Request | null> {
         return this.DAO.getRequestByID(ID);
       }
 
-    //getbyusername:
+    
     getRequestByUsername(username:string):Promise<Request[]|null>{
       return this.DAO.getRequestByUsername(username);
     };
     
-      //Update-PUT:
+      
     updateReimbursement(request: Request): Promise<boolean> {
         return this.DAO.update_request(new Request(
             request.ObjType="Request",
@@ -69,7 +67,7 @@ export class RequestService{
       }
 
 
-    //Delete-DELETE:
+    
     deleteRequest(ID: string): Promise<boolean> {
         return this.DAO.delete_request(ID);
       }

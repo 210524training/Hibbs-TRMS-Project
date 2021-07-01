@@ -9,8 +9,6 @@ export class RequestDAO{
     constructor(){
         this.client=myDocClient;
     }
-    
-    //create
     async addRequest(request: request):Promise<boolean>{
     
         const params: DocumentClient.PutItemInput={
@@ -32,11 +30,7 @@ export class RequestDAO{
             return false;
         }
     }
-    
-    
-    //read:
-        //getall:
-        async getAllRequests(): Promise<request[]>{
+    async getAllRequests(): Promise<request[]>{
             const params: DocumentClient.QueryInput={
                 TableName: 'TRMS-data',
                 KeyConditionExpression: '#o = :r',
@@ -55,10 +49,7 @@ export class RequestDAO{
             const data=await this.client.query(params).promise();
             return data.Items as request[];
         }
-
-    
-        //getbyid:
-        async getRequestByID(ID: string): Promise<request | null>{
+    async getRequestByID(ID: string): Promise<request | null>{
             const params: DocumentClient.GetItemInput={
                 TableName: 'TRMS-data',
                 Key: {
@@ -77,14 +68,11 @@ export class RequestDAO{
             const data=await this.client.get(params).promise();
             return data.Item as request;
         }
-
-
-        //getbyname:
-        async getRequestByUsername(username:string):Promise<request[]|null>{
+    async getRequestByUsername(username:string):Promise<request[]|null>{
             const params: DocumentClient.QueryInput={
                 TableName:'TRMS-data',
                 IndexName:'username',
-                KeyConditionExpression:'ObjType=:o AND username=:u',
+                KeyConditionExpression:'ObjType=:o AND #u=:u',
                 FilterExpression:':u=#u',
                 ExpressionAttributeValues:{
                     ':o':"Employee",
@@ -97,8 +85,7 @@ export class RequestDAO{
                     '#desc':'description',
                 },
                 ProjectionExpression:'ObjType,#u,realName,ID,cost,#s,eventType,reimbursePortion,expectedAmount,#d,#desc,grade,gradeFormat,passingGrade,presentationSubmission',
-            };
-            
+            };            
             let userRequests: request[]=[];
             const data=await this.client.query(params).promise();
             if(!data.Items ||data.Count===0){
@@ -110,14 +97,36 @@ export class RequestDAO{
             };
             return userRequests;
         };
-        //getbydate:
-
-
         
-    
-    
-    
-    //update
+    async getRequestByStatus(status:string):Promise<request[]|null>{
+        const params: DocumentClient.QueryInput={
+            TableName:'TRMS-data',
+            IndexName:'status',
+            KeyConditionExpression:'ObjType=:o AND #s=:s',
+            ExpressionAttributeValues:{
+            ':o':"Request",
+            ':s':status,
+        },
+        ExpressionAttributeNames:{
+            '#s':'status',
+            '#d':"Date",
+            '#u':'username',
+            '#desc':'description',
+        },
+        ProjectionExpression:'ObjType,#u,realName,ID,cost,#s,eventType,reimbursePortion,expectedAmount,#d,#desc,grade,gradeFormat,passingGrade,presentationSubmission',
+    };
+    let userRequests: request[]=[];
+    const data=await this.client.query(params).promise();
+    console.log(data);
+    if(!data.Items ||data.Count===0){
+        return null;
+    }else{
+        for(let i=0; i<data.Items.length;i++){
+            userRequests.push(data.Items[i] as request);
+        }
+    };
+    return userRequests;
+};
     async update_request(request:request):Promise<boolean>{
         const params: DocumentClient.PutItemInput={
             TableName:'TRMS-data',
@@ -138,9 +147,6 @@ export class RequestDAO{
             return false;
         }
     }
-    
-    
-    //delete
     async delete_request(ID:string):Promise<boolean>{
         const params: DocumentClient.DeleteItemInput={
             TableName:"TRMS-data",
@@ -156,9 +162,6 @@ export class RequestDAO{
             console.log('Failed to delete request: ',error);
             return false;
         };
-    }
-    
-    
-    }
+    }}
     const requestDAO = new RequestDAO();
     export default requestDAO;

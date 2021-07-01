@@ -2,13 +2,13 @@ import express, { Router } from 'express';
 import reimbursementService from '../services/ReimburseService';
 import { AuthenticationError } from '../errors';
 import reimbursement from '../models/reimbursement';
+import thereconciler from '../services/reconciliation';
 import session from 'express-session'
+import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders';
 
 const reimbursementRouter = Router();
 
 reimbursementRouter.get('/getall', async (req, res) => {
-  console.log('Reached our reimbursement router get all router');
-
   if(!req.session.isLoggedIn || !req.session.user) {
     throw new AuthenticationError('You must be logged in to access this functionality');
   }
@@ -20,10 +20,6 @@ reimbursementRouter.get('/getall', async (req, res) => {
 
 reimbursementRouter.get('/user/:username', async (req, res) => {
   const { username } = req.params;
-  //username.substring(1);
-  console.log("Reached router for username: "+username);
-  //console.log(req);
-  //console.log(res);
   if(!req.session.isLoggedIn || !req.session.user) {
     throw new AuthenticationError('You must be logged in to access this functionality');
   }
@@ -31,11 +27,22 @@ reimbursementRouter.get('/user/:username', async (req, res) => {
   res.json(
     await reimbursementService.getReimbursementByUsername(username),
   );
+  
+});
+
+reimbursementRouter.get('/status/:status', async (req, res) => {
+  const { status } = req.params;
+  if(!req.session.isLoggedIn || !req.session.user) {
+    throw new AuthenticationError('You must be logged in to access this functionality');
+  }
+
+  res.json(
+    await reimbursementService.getReimbursementByStatus(status),
+  );
+  
 });
 
 reimbursementRouter.post('/addReimbursement', async (req: express.Request<unknown, unknown, reimbursement, unknown, {}>, res) => {
-    console.log(req.body);
-    //console.log(res.json(req.body));
     if(!req.session.isLoggedIn || !req.session.user) {
       throw new AuthenticationError('You must be logged in to access this functionality');
     }
@@ -47,8 +54,7 @@ reimbursementRouter.post('/addReimbursement', async (req: express.Request<unknow
 
 reimbursementRouter.get('/id/:ID', async (req, res) => {
   const { ID } = req.params;
-  //console.log(req);
-  //console.log(res);
+  
   if(!req.session.isLoggedIn || !req.session.user) {
     throw new AuthenticationError('You must be logged in to access this functionality');
   }
@@ -60,19 +66,31 @@ reimbursementRouter.get('/id/:ID', async (req, res) => {
 
 
 
-reimbursementRouter.put('/', async (req: express.Request<unknown, unknown, reimbursement, unknown, {}>, res) => {
+reimbursementRouter.put('/update', async (req: express.Request<unknown, unknown, reimbursement, unknown, {}>, res) => {
   if(!req.session.isLoggedIn || !req.session.user) {
     throw new AuthenticationError('You must be logged in to access this functionality');
   }
-
   res.json(
     await reimbursementService.updateReimbursement(req.body),
   );
 });
 
-reimbursementRouter.delete('/:ID', async (req, res) => {
-  const { ID } = req.params;
+reimbursementRouter.patch('/patch', async (req: express.Request<unknown, unknown, reimbursement, unknown, {}>, res) => {
+  if(!req.session.isLoggedIn || !req.session.user) {
+    throw new AuthenticationError('You must be logged in to access this functionality');
+  }
+  let original=await reimbursementService.getReimbursementByID(req.body.ID);
+  console.log(original);
+  let ReconciledReimbursement=thereconciler.reconcileReimbursementUpdate(req.body,original!);
+  console.log(ReconciledReimbursement);
+  res.json(
+    await reimbursementService.updateReimbursement(ReconciledReimbursement),
+  );
+});
 
+reimbursementRouter.delete('/:ID', async (req, res) => {
+  //console.log("delet router: "+req);
+  const { ID } = req.params;
   if(!req.session.isLoggedIn || !req.session.user) {
     throw new AuthenticationError('You must be logged in to access this functionality');
   }

@@ -9,10 +9,7 @@ export class ReimbursementDAO{
     constructor(){
         this.client=myDocClient;
     }
-    
-    //create
-    async addReimbursement(reimbursement:reimbursement ):Promise<boolean>{
-        console.log(reimbursement.Date);
+    async addReimbursement(reimbursement:reimbursement ):Promise<boolean>{ 
         const params: DocumentClient.PutItemInput={
             TableName: 'TRMS-data',
             Item:{
@@ -25,6 +22,7 @@ export class ReimbursementDAO{
             },
         };
         try{
+            //console.log(params);
             await this.client.put(params).promise();
             return true
         }catch(error){
@@ -32,12 +30,7 @@ export class ReimbursementDAO{
             return false;
         }
     }
-    
-    
-    //read:
-        //getall:
-        async getAllReimbursements(): Promise<reimbursement[]>{
-            console.log('at get all reimburse DAO')
+    async getAllReimbursements(): Promise<reimbursement[]>{
             const params: DocumentClient.QueryInput={
                 TableName: 'TRMS-data',
                 KeyConditionExpression: '#o = :r',
@@ -53,14 +46,10 @@ export class ReimbursementDAO{
                 },
                 ProjectionExpression:'ObjType,#u,realName,ID,cost,#s,eventType,reimbursePortion,expectedAmount,#d,#desc,grade,gradeFormat,passingGrade,presentationSubmission',
             };
-
             const data=await this.client.query(params).promise();
             return data.Items as reimbursement[];
         }
-
-    
-        //getbyid:
-        async getReimbursementByID(ID:string): Promise<reimbursement | null>{
+    async getReimbursementByID(ID:string): Promise<reimbursement | null>{
             const params: DocumentClient.GetItemInput={
                 TableName: 'TRMS-data',
                 Key: {
@@ -79,20 +68,14 @@ export class ReimbursementDAO{
             const data=await this.client.get(params).promise();
             return data.Item as reimbursement;
         };
-
-        //getbyname:
-        async getReimbursementByUsername(username:string):Promise<reimbursement[]|null>{
-            console.log("Reached DAO for username: "+username)
-            
-            
-            
+    async getReimbursementByUsername(username:string):Promise<reimbursement[]|null>{
             const params: DocumentClient.QueryInput={
                 TableName:'TRMS-data',
                 IndexName:'username',
                 KeyConditionExpression:'ObjType=:o AND username=:u',
-                //FilterExpression:':u=#u',
+                
                 ExpressionAttributeValues:{
-                    ':o':"Employee",
+                    ':o':"Reimbursement",
                     ':u':username,
                 },
                 ExpressionAttributeNames:{
@@ -103,32 +86,10 @@ export class ReimbursementDAO{
                 },
                 ProjectionExpression:'ObjType,#u,realName,ID,cost,#s,eventType,reimbursePortion,expectedAmount,#d,#desc,grade,gradeFormat,passingGrade,presentationSubmission',
             };
-
-            
-            /*const params: DocumentClient.QueryInput={
-                TableName: 'TRMS-data',
-                
-                KeyConditionExpression: '#o = :r AND #u=:u',
-                
-                ExpressionAttributeNames: {
-                  '#o': 'ObjType',
-                  '#s':'status',
-                  '#d':"Date",
-                  '#u':'username',
-                  '#desc':'description',
-                  "#I":'ID'
-                },
-                ExpressionAttributeValues: {
-                  ':r': 'Reimbursement',
-                  ':u':username,
-                  
-                },
-                ProjectionExpression:'ObjType,#u,realName,ID,cost,#s,eventType,reimbursePortion,expectedAmount,#d,#desc,grade,gradeFormat,passingGrade,presentationSubmission',
-            };*/
-            
             let userReimbursements: reimbursement[]=[];
             const data=await this.client.query(params).promise();
-            console.log(data);
+            //console.log(data);
+            console.log(data.Count);
             if(!data.Items ||data.Count===0){
                 return null;
             }else{
@@ -136,20 +97,46 @@ export class ReimbursementDAO{
                     userReimbursements.push(data.Items[i] as reimbursement);
                 }
             };
+            console.log(userReimbursements[0].expectedAmount);
             return userReimbursements;
         };
-
-
-
-
-        //getbydate:
-
-
+    async getReimbursementByStatus(status:string):Promise<reimbursement[]|null>{
+        //console.log(status);
+            const params: DocumentClient.QueryInput={
+                TableName:'TRMS-data',
+                IndexName:'status',
+                //KeyConditionExpression:'ObjType=:o AND #s=:s',
+                FilterExpression:'ObjType=:o AND #s=:s',
+                ExpressionAttributeValues:{
+                    ':o':"Reimbursement",
+                    ':s':status,
+                },
+                ExpressionAttributeNames:{
+                    '#s':'status',
+                    '#d':"Date",
+                    '#u':'username',
+                    '#desc':'description',
+                },
+                ProjectionExpression:'ObjType,#u,realName,ID,cost,#s,eventType,reimbursePortion,expectedAmount,#d,#desc,grade,gradeFormat,passingGrade,presentationSubmission',
+            };
+            //console.log(params);
+            let userReimbursements: reimbursement[]=[];
+            const data=await this.client.scan(params).promise();
+            //console.log(data);
+            //console.log(data.Items);
+            
+            if(!data.Items ||data.Count===0){
+                console.log("where'd everything go?")
+                return null;
+            }else{
+                for(let i=0; i<data.Items.length;i++){
+                    userReimbursements.push(data.Items[i] as reimbursement);
+                }
+            };
+            console.log(userReimbursements[0].expectedAmount);
+            return userReimbursements;
+        };
         
-    
-    
-    
-    //update
     async update_reimbursement(reimbursement:reimbursement):Promise<boolean>{
         const params: DocumentClient.PutItemInput={
             TableName:'TRMS-data',
@@ -171,10 +158,8 @@ export class ReimbursementDAO{
             return false;
         }
     }
-    
-    
-    //delete
     async delete_reimbursement(ID:string):Promise<boolean>{
+        //console.log('delete DAO: '+ID);
         const params: DocumentClient.DeleteItemInput={
             TableName:"TRMS-data",
             Key:{
@@ -189,9 +174,6 @@ export class ReimbursementDAO{
             console.log('Failed to delete reimbursement: ',error);
             return false;
         };
-    }
-    
-    
-    }
+    }}
     const reimbursementDAO = new ReimbursementDAO();
     export default reimbursementDAO;

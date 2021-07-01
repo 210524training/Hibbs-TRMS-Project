@@ -8,6 +8,7 @@ export default class BenCo extends employee{
         public username:String,
         public password:string,
         public RealName:string,
+        public status:string='null',
         public pendingReimbursements:number,
         public awardedReimbursements:number,
         public usedReimbursements:number=pendingReimbursements+awardedReimbursements,
@@ -15,10 +16,6 @@ export default class BenCo extends employee{
         public supervisor:null | string,
         public department:string,
     ) {
-        super(ObjType,ID,username,password,RealName,pendingReimbursements,awardedReimbursements,usedReimbursements,availableReimbursements,supervisor,department);
+        super(ObjType,ID,username,password,RealName,status,pendingReimbursements,awardedReimbursements,usedReimbursements,availableReimbursements,supervisor,department);
     }
 };
-//export function makebenCo(ID:string=uuid.v4(),username:string,password:string,name:string,pendingReimbursements:number,awardedReimbursements:number,supervisor:string,department:string){
-//    let benCo=new BenCo("Benefits Controller",ID=uuid.v4(),username,password,name,pendingReimbursements,awardedReimbursements,pendingReimbursements+awardedReimbursements,1000-(pendingReimbursements+awardedReimbursements),supervisor,department);
-//    return benCo;
-//}

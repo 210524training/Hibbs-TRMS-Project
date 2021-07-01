@@ -8,6 +8,7 @@ export default class Employee extends user{
         public username:String,
         public password:string,
         public RealName:string,
+        public status:string='null',
         public pendingReimbursements:number,
         public awardedReimbursements:number,
         public usedReimbrsements:number=pendingReimbursements+awardedReimbursements,
@@ -19,7 +20,3 @@ export default class Employee extends user{
     }
 };
 
-//export function makeEmployee(ID:string=uuid.v4(),username:string,password:string,name:string,pendingReimbursements:number,awardedReimbursements:number,supervisor:string,department:string){
-//    let Emp=new Employee("Employee",ID=uuid.v4(),username,password,name,pendingReimbursements,awardedReimbursements,pendingReimbursements+awardedReimbursements,1000-(pendingReimbursements+awardedReimbursements),supervisor,department);
-//    return Emp;
-//}
